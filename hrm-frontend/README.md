@@ -40,6 +40,8 @@ Create `.env` file:
 VITE_API_URL=http://localhost:5000/api
 ```
 
+For Vercel/production, set `VITE_API_URL` to your deployed backend URL (e.g., `https://your-backend-domain.com/api`). You can also use the included `.env.example` as a template.
+
 ## Project Structure
 
 ```
