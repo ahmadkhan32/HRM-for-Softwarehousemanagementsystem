@@ -2,20 +2,27 @@ const { Sequelize } = require('sequelize');
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-const dbName = process.env.DB_NAME || 'hrm_db';
-const dbUser = process.env.DB_USER || 'root';
-const dbPassword = process.env.DB_PASSWORD || '';
-const dbHost = process.env.DB_HOST || 'localhost';
+const dbName = process.env.DB_NAME || 'b10_40637242_hrm_sys';
+const dbUser = process.env.DB_USER || 'b10_40637242';
+const dbPassword = process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : 'd6ky275f';
+const dbHost = process.env.DB_HOST || 'sql100.byethost10.com';
 const dbPort = process.env.DB_PORT || 3306;
+const dbTimeout = Number(process.env.DB_CONNECT_TIMEOUT || 10000);
+const skipDbCreate = process.env.DB_SKIP_CREATE === 'true';
 
-// Function to create database if it doesn't exist
+// Function to create database if it doesn't exist (can be skipped on hosted DBs)
 const ensureDatabaseExists = async () => {
+  if (skipDbCreate) {
+    return true;
+  }
   try {
     // Connect to MySQL without selecting a database
     const connectionConfig = {
       host: dbHost,
       port: dbPort,
-      user: dbUser
+      user: dbUser,
+      // Ensure the initial connection does not hang forever
+      connectTimeout: dbTimeout
     };
     // Only add password if it's not empty
     if (dbPassword && dbPassword.trim() !== '') {
@@ -27,9 +34,11 @@ const ensureDatabaseExists = async () => {
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
     await connection.end();
     return true;
+
   } catch (error) {
-    console.error('❌ Error ensuring database exists:', error.message);
-    return false;
+    console.warn('⚠️  Warning: Could not check/create database. Assuming it exists or user has no permission to create.', error.message);
+    // Return true to allow connection attempt to proceed, as the DB likely exists
+    return true;
   }
 };
 
@@ -50,6 +59,9 @@ const sequelizeConfig = {
     min: 0,
     acquire: 30000,
     idle: 10000
+  },
+  dialectOptions: {
+    connectTimeout: 60000 // 60 seconds
   }
 };
 
