@@ -7,7 +7,7 @@ const dbUser = process.env.DB_USER || 'b10_40637242';
 const dbPassword = process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : 'd6ky275f';
 const dbHost = process.env.DB_HOST || 'sql100.byethost10.com';
 const dbPort = process.env.DB_PORT || 3306;
-const dbTimeout = Number(process.env.DB_CONNECT_TIMEOUT || 10000);
+const dbTimeout = Number(process.env.DB_CONNECT_TIMEOUT || 20000);
 const skipDbCreate = process.env.DB_SKIP_CREATE === 'true';
 
 // Function to create database if it doesn't exist (can be skipped on hosted DBs)

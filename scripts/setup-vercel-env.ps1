@@ -6,7 +6,7 @@ $env:VERCEL_PROJECT_ID = ""
 
 Write-Host "🚀 Setting up Vercel Environment Variables..."
 
-cd "..\hrm-backend"
+Set-Location "..\hrm-backend"
 
 Write-Host "1. Setting DB_HOST..."
 "sql100.byethost10.com" | vercel env add DB_HOST production
