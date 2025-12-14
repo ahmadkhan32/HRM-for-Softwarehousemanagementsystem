@@ -21,7 +21,6 @@ const ensureDatabaseExists = async () => {
       host: dbHost,
       port: dbPort,
       user: dbUser,
-      // Ensure the initial connection does not hang forever
       connectTimeout: dbTimeout
     };
     // Only add password if it's not empty
@@ -37,7 +36,6 @@ const ensureDatabaseExists = async () => {
 
   } catch (error) {
     console.warn('⚠️  Warning: Could not check/create database. Assuming it exists or user has no permission to create.', error.message);
-    // Return true to allow connection attempt to proceed, as the DB likely exists
     return true;
   }
 };
@@ -93,7 +91,7 @@ const testConnection = async () => {
     console.error('\n💡 Troubleshooting:');
     console.error('   1. Check database credentials in .env file');
     console.error('   2. Verify MySQL user has proper privileges');
-    console.error('   3. Check if ByteHost database is accessible');
+    console.error('   3. Check ByteHost database is accessible');
     return false;
   }
 };
