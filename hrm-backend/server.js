@@ -65,6 +65,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Test database connection (non-blocking for Vercel)
+testConnection().catch(err => {
+  console.error('Database connection warning:', err.message);
+});
+
 // Start Server and Connect DB (only for local development)
 if (require.main === module) {
   const startServer = async () => {
@@ -86,6 +91,6 @@ if (require.main === module) {
   startServer();
 }
 
-// Export for Vercel serverless
+// Export for Vercel serverless - Vercel will use this directly
 module.exports = app;
 
